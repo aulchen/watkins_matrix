@@ -1,6 +1,6 @@
 %Given a real square matrix A, compute the QR decomposition
 
-function [Q, A] = qr_decomposition(A)
+function [Q, A] = qr_decomposition_naive(A)
   n = size(A)(1);
   Q = eye(n);
   if n == 1
