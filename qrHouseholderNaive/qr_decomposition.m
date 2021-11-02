@@ -23,8 +23,8 @@ function [Q, A] = qr_decomposition(A)
     %Update the upper-right block
     if k > 1
       v = gamma*u;
-      v = Q(k-1, k:n)*v;
-      Q(k-1, k:n) = Q(k-1, k:n)-(v*u');
+      v = Q(1:k-1, k:n)*v;
+      Q(1:k-1, k:n) = Q(1:k-1, k:n)-(v*u');
     endif
   endfor
 end
