@@ -1,0 +1,53 @@
+\documentclass{article}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{algpseudocode}
+
+\newenvironment{proof}{\paragraph{Proof:}}{\hfill$\square$}
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+
+\author{Arthur Chen}
+\title{Watkins Matrix Computations Chapter 1}
+\date{\today}
+
+\begin{document}
+
+\section*{1.3 Triangular Systems}
+
+\subsection*{Exercise 1.3.15}
+
+Develop row-oriented back substitution for upper-triangular matrices.
+
+Let the system be $Ux = y$, where $U$ is upper triangular. Writing out the equations,
+
+\begin{align*}
+u_{11}x_1 + u_{12}x_2 \dots u_{1,n-1}x_{n-1} + u_{1n}x_n &= y_1 \\ 
+u_{22}x_2 \dots u_{2,n-1}x_{n-1} + u_{2n}x_n &= y_2 \\
+\vdots \\
+u_{n-1,n-1}x_{n-1} + u_{n-1,n}x_n &= y_{n-1} \\
+u_{nn}x_n &= y_n
+\end{align*}
+
+This suggests the following algorithm.
+TODO.
+
+\section*{1.7 Gaussian Elimination and the LU Decomposition}
+
+\subsection*{Exercise 1.7.2}
+
+Prove Proposition 1.7.1: If $\hat{A}x=\hat{b}$ is obtained from $Ax = b$ by an elementary operation of type 1, 2, or 3, then the systems $Ax = b$ and $\hat{A}x=\hat{b}$ are equivalent. That is, they have the same solution set.
+
+\begin{proof}
+We begin with showing operations of type 1, i.e., adding a multiple of one equation to another equation. Let $A_i$ be the $i$th row of matrix $A$.
+
+For the forward, we need to show that if $x$ solves $Ax = b$, then $x$ solves $\hat{A}x = \hat{b}$. Suppose that $\hat{A}$ was created by adding $m$ times row $p$ to row $q$ of $A$. Then $\hat{A}_i = A_i$ and $\hat{b}_i = b_i$ for $i \neq q$, and $\hat{A}_q = mA_p + A_q$, $\hat{b}_q = mb_p + b_q$. $x$ solves $\hat{A}x = \hat{b}$ for rows $i \neq q$ trivially. For row $q$, $\hat{A}_q x = (mA_p + A_q) x = mA_p x + A_q x = mb_p + b_q = \hat{b}_q$. Thus $x$ solves $\hat{A}x = \hat{b}$.
+
+For the reverse, we need to show that if $x$ solves $\hat{A}x = \hat{b}$, then $x$ solves $Ax = b$. Again, suppose that $\hat{A}$ was created by adding $m$ times row $p$ to row $q$ of $A$. Since $\hat{A}_p = A_p$, by subtracting $m$ times row $p$ from row $q$ of $\hat{A}$, we get back $A_q$ and $b_q$. Since this is an elementary row operation of type 1, the theorem proved above holds.
+
+Interchanging two rows and multiplying an equation by a non-zero constant are trivial.
+\end{proof}
+
+\end{document}
