@@ -1,3 +1,5 @@
-A = [1 2; 3 4; 5 6];
+A = hilb(5);
 [Q, R] = qr(A)
-[Q2, R2] = qr_decomposition(A)
+[AStar, gamma] = qr_decomposition(A);
+Q2 = generate_q(AStar, gamma)
+R = triu(AStar)
