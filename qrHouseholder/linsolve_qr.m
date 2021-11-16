@@ -1,4 +1,5 @@
 %Solve a linear system Ax = b using QR decomposition
+% A is nxn, b is nx1, Q is nxn, R is nxn
 %b is assumed to be a column vector
 
 function x = linsolve_qr(A, b)
