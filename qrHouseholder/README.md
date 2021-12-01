@@ -1,1 +1,1 @@
-Implementation of Householder reflectors for QR decomposition.
+Implements QR Decomposition using Householder reflectors. Does not explicitly compute Q.

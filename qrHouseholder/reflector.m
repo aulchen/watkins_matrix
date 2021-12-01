@@ -1,5 +1,7 @@
 %Given a real vector x, computes the reflector that makes
 %all entries except the first 0.
+%The output is computed such that Q = I - gamma u u'
+%is a reflector of x such that Qx = [-tau 0 0 ...0]
 
 function [tau, gamma, u] = reflector(x)
   n = length(x);

@@ -1,0 +1,117 @@
+\documentclass{article}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+
+\usepackage{graphicx}
+\graphicspath{ {./images/} }
+
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\N}{\mathbb{N}}
+
+\newenvironment{proof}{\paragraph{Proof:}}{\hfill$\square$}
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+
+\author{Arthur Chen}
+\title{QR Householder Function Descriptions}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\section*{Main Functions}
+
+\subsection*{reflector.m}
+
+Given $x \in \R^{n \times 1}$, implicitly computes a reflector $Q \in \R^{n \times n}$ such that $Qx = \alpha e_1$, where $e_1$ is the first standard basis vector in $\R^n$ and $\alpha \in \R \neq 0$.
+
+Specifically, given $x$, reflector.m outputs $\tau, \gamma \in \R$, $u \in R^{n \times 1}$ such that $Q = I - \gamma u u^T$ is a reflector such that $Qx = -\tau e^1$.
+
+Given $B \in \R^{n \times m}$, the efficient way to compute $QB$ is as follows:
+
+\begin{align*}
+&v^T \leftarrow \gamma u^T \\
+&v^T \leftarrow v^T B\\
+&B \leftarrow B - uv^T
+\end{align*}
+
+\subsection*{qr decomposition.m}
+
+Given a full-rank real matrix $A \in \R^{n \times m}$, $n \geq m$, implicitly computes the (condensed) QR decomposition. Specifically, implicitly generates $Q \in \R^{n \times m}$, $Q$ is isometric, and $R \in \R^{m \times m}$, $R$ is upper triangular, such that $A = QR$.
+
+The output matrix $A$ contains $R$ on its upper diagonal, and contains the $m$ normalized $u$ vectors as columns in the strict lower triangle, minus the initial $1$. Thus, if
+\[
+A =
+\begin{pmatrix}
+1 & 2 \\
+.5 & 3 \\
+.2 & .3
+\end{pmatrix}
+\]
+
+then
+
+\[
+R =
+\begin{pmatrix}
+1 & 2\\
+0 & 3
+\end{pmatrix}
+\]
+
+and
+\[
+u_1 =
+\begin{pmatrix}
+1\\
+.5\\
+.2
+\end{pmatrix}
+, u_2 =
+\begin{pmatrix}
+1\\
+.3
+\end{pmatrix}
+\]
+
+\subsection*{least squares.m}
+
+Uses QR Decomposition to solve the least squares problem. Given $A \in \R^{m \times n}$ and $b \in \R^{m \times 1}$, $m \geq n$, $A$ is full rank, finds $x \in \R^{n \times 1}$ such that $x$ solves the least squares problem, i.e. minimizes the 2-norm of the residual. Alternatively, using the normal equations, $A^TAx = A^Tb$.
+
+Because $A = QR$ and $Q$ is an isometry, $A^TA =  (R^TQ^T)(QR) = R^TR$. Thus
+\[
+A^TAx = A^Tb \rightarrow R^TRx = R^TQ^Tb \rightarrow Rx = Q^Tb
+\]
+
+because we assumed $A$ has full rank, meaning $R$ is invertible. Thus we can use reflectors to compute $y = Q^Tb$. Since $R$ is upper-triangular, $Rx = y$ can be solved by backwards substitution.
+
+\section*{Helper Functions}
+
+\subsection*{generate q.m}
+
+Given a matrix $A$ and vector $\gamma$ from from qr decomposition.m, generates $Q$ explicitly as a matrix. Useful for debugging.
+
+Each $u_k, \gamma_k, \tau_k$ implicitly defines a $Q_k$, and $Q = Q_1Q_2 \dots Q_{\text{end}}$. generate q.m simply applies these reflectors right to left to an identity matrix to generate $Q$.
+
+\subsection*{backsubs.m}
+
+Given $Ax = b$, $A \in \R^{n \times n}$ and upper triangular, uses backwards substitution to calculate $x$.
+
+\section*{Test Functions}
+
+\subsection*{linsolve qr.m}
+
+Solves a linear system $Ax = b$, $A \in R^{n \times n}$, $b \in \R^{n \times 1}$ using QR decomposition. This is inefficient, but useful for debugging purposes.
+
+
+\section*{References}
+
+More details can be found in Watkin's Fundamentals of Matrix Computations, 2nd Edition.
+
+(Ideally I'd have a Works Cited section here, but I haven't figured out how to configure that yet.)
+
+\end{document}
